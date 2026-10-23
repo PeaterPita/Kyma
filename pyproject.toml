@@ -1,11 +1,12 @@
 [project]
-name = "simplex-noise-visualiser"
+name = "Kyma"
 version = "0.1.0"
 dependencies = [
-    "markdown-it-py>=4.0.0",
-    "mdurl>=0.1.2",
-    "numpy>=2.3.4",
-    "opensimplex>=0.4.5.1",
-    "Pygments>=2.19.2",
-    "rich==14.2.0",
+  "Pygments>=2.19.2",
+  "markdown-it-py>=4.0.0",
+  "mdurl>=0.1.2",
+  "numpy>=2.3.4",
+  "opensimplex>=0.4.5.1",
+  "rich==14.2.0",
 ]
+

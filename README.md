@@ -1,7 +1,13 @@
-# simplex-noise-visualiser
-A tool to visualise simplex noise in a command-line interface.
+<div align="center">
+    <h1>Kyma</h1>
+    <p> A Tool to visuualise simplex noise in a command-line interface.
+</div>
 
-This is a seriously simple project, and merely came to fruition so I could learn simplex, rich, and shell scripting. Do not expect any future updates.
+> [!NOTE]
+> This is a seriously simple project.
+>
+> Forked from: [TheUsernameIsNotLong/simplex-noise-visualiser](https://github.com/TheUsernameIsNotLong/simplex-noise-visualiser)
+
 
 ## Installation
 
@@ -31,6 +37,5 @@ powershell -ExecutionPolicy ByPass -c "irm [https://astral.sh/uv/install.ps1](ht
 curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
 ```
 
-I'm actually unsure whether this works on mac or linux lol - I'll have to check it at some point :)
 
 </details>
