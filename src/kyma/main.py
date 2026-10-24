@@ -23,8 +23,8 @@ def generate_random_seed() -> int:
 
 def print_summary_bar(
     user_seed: int,
-    num_rows: int,
-    num_cols: int,
+    height: int,
+    width: int,
     scale: float,
     octaves: int,
     persistence: float,
@@ -32,13 +32,13 @@ def print_summary_bar(
 ):
     """Print a summary bar of the user's configuration."""
     seed = f"SEED: {user_seed}"
-    size = f"SIZE: {num_rows} x {num_cols}"
+    size = f"SIZE: {height} x {width}"
     sca = f"SCL: {scale}"
     otv = f"OCT: {octaves}"
     per = f"PER: {persistence}"
     lac = f"LAC: {lacunarity}"
     joined_text = " | ".join([seed, size, sca, otv, per, lac])
-    panel = Panel(Align.center(joined_text), style="bold", width=num_cols * 2)
+    panel = Panel(Align.center(joined_text), style="bold", width=width * 2)
 
     # This wont align if show_value is true;
     # but since that dramatically increases width, this is acceptable
@@ -54,10 +54,10 @@ def initialise():
     ox = OpenSimplex(seed=user_seed)
 
     # 2: Noise generation settings
-    num_rows = get_number_input(
+    height = get_number_input(
         "Enter number of rows (default 20): ", 20, upper=1000, lower=1
     )
-    num_cols = get_number_input(
+    width = get_number_input(
         "Enter number of columns (default 50): ", 50, upper=1000, lower=1
     )
     scale = get_number_input("Enter scale (default 0.1): ", 0.1, upper=10, lower=0)
@@ -99,14 +99,12 @@ def initialise():
     except ValueError:
         show_value = False
 
-    print_summary_bar(
-        user_seed, num_rows, num_cols, scale, octaves, persistence, lacunarity
-    )
+    print_summary_bar(user_seed, height, width, scale, octaves, persistence, lacunarity)
 
     return (
         ox,
-        num_rows,
-        num_cols,
+        height,
+        width,
         scale,
         octaves,
         persistence,
@@ -144,31 +142,39 @@ def layered_noise_array(
     return total / max_value
 
 
+### params
+# scale: float,
+# octaves: int,
+# persistence: float,
+# lacunarity: float,
+# gradient: list,
+# show_value: bool,
+
+
 def generate(
     ox: OpenSimplex,
-    num_rows: int,
-    num_cols: int,
-    scale: float,
-    octaves: int,
-    persistence: float,
-    lacunarity: float,
-    gradient: list,
-    show_value: bool,
+    params,
+    width,
+    height,
 ):
     """Generate and display the noise grid."""
-
     noise_map = layered_noise_array(
-        ox, num_cols, num_rows, scale, octaves, persistence, lacunarity
+        ox,
+        width,
+        height,
+        scale=params["scale"],
+        octaves=params["octaves"],
+        persistence=params["persistence"],
+        lacunarity=params["lacunarity"],
     )
 
     frame = Text()
-
-    for i in range(num_rows):
-        for j in range(num_cols):
+    for i in range(height):
+        for j in range(width):
             noise_value = noise_map[i][j]
-            colour = new_colourise_value(noise_value, gradient)
+            colour = new_colourise_value(noise_value, params["gradient"])
 
-            if not show_value:
+            if not params["show_value"]:
                 frame.append(
                     "██",
                     style=colour,
