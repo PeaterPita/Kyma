@@ -7,12 +7,13 @@ from opensimplex import OpenSimplex
 from rich.align import Align
 from rich.console import Console
 from rich.panel import Panel
+from rich.text import Text
 
 from kyma.colour import determine_gradient_points, new_colourise_value
 from kyma.generic import get_number_input
 from kyma.presets import preset_colours
 
-console = Console()
+# console = Console()
 
 
 def generate_random_seed() -> int:
@@ -160,20 +161,32 @@ def generate(
         ox, num_cols, num_rows, scale, octaves, persistence, lacunarity
     )
 
+    frame = Text()
+
     for i in range(num_rows):
         for j in range(num_cols):
             noise_value = noise_map[i][j]
             colour = new_colourise_value(noise_value, gradient)
+
             if not show_value:
-                console.print("██", style=colour, end="")
+                frame.append(
+                    "██",
+                    style=colour,
+                )
             else:
-                console.print(f"[{noise_value:+.2f}]", style=colour, end=" ")
-        console.print()  # New line after each row
+                frame.append(f"[{noise_value:+.2f}]", style=colour)
+
+        # New line after each row
+        frame.append("\n")
+
+    return frame
 
 
 def main() -> None:
-    parameters = initialise()
-    generate(*parameters)
+    from kyma.app import KymaApp
+
+    app = KymaApp()
+    app.run()
 
 
 if __name__ == "__main__":
