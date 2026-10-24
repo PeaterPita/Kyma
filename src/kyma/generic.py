@@ -1,6 +1,7 @@
 """Utility functions for getting user input with default values."""
 
-def get_int(prompt: str, default: int, upper: int=None, lower: int=None) -> int:
+
+def get_int(prompt: str, default: int, upper: int = None, lower: int = None) -> int:
     """Get an integer input from the user, with a default value."""
     while True:
         value = input(prompt)
@@ -17,7 +18,10 @@ def get_int(prompt: str, default: int, upper: int=None, lower: int=None) -> int:
             print(f"Invalid input. Using default value of {default}.")
             return default
 
-def get_float(prompt: str, default: float, upper: float=None, lower: float=None) -> float:
+
+def get_float(
+    prompt: str, default: float, upper: float = None, lower: float = None
+) -> float:
     """Get a float input from the user, with a default value."""
     while True:
         value = input(prompt)

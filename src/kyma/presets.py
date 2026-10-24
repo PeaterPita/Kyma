@@ -1,4 +1,5 @@
 """Preset colour gradients for simplex noise visualization."""
+# fmt: off
 
 # Advice on adding your own presets:
 # 1. Copy one of the existing presets below.
@@ -10,40 +11,48 @@
 
 preset_colours = {}
 
-preset_rainbow = {"VIBRANT RAINBOW":
-                  [[255, 0, 0],
-                  [255, 255, 0],
-                  [0, 255, 0],
-                  [0, 255, 255],
-                  [0, 0, 255],
-                  [255, 0, 255]]}
+preset_rainbow = {
+    "VIBRANT RAINBOW": [
+        [ 255, 0,   0   ],
+        [ 255, 255, 0   ],
+        [ 0,   255, 0   ],
+        [ 0,   255, 255 ],
+        [ 0,   0,   255 ],
+        [ 255, 0,   255 ]
+    ]
+}
 
-preset_traffic = {"TRAFFIC LIGHTS":
-                  [[255, 0, 0],
-                  [255, 255, 0],
-                  [0, 255, 0]]}
+preset_traffic = {
+    "TRAFFIC LIGHTS": [
+        [ 255, 0,   0   ],
+        [ 255, 255, 0   ],
+        [ 0,   255, 0   ]
+    ]
+}
 
-preset_greyscale = {"GLOOMY GREYSCALE":
-                    [[0, 0, 0],
-                    [255, 255, 255]]}
+preset_greyscale = {
+    "GLOOMY GREYSCALE": [
+        [ 0,   0,   0   ],
+        [ 255, 255, 255 ]
+    ]
+}
 
-preset_icy = {"ICE-COLD BLUES":
-              [[0, 128, 255],
-               [135, 0, 255],
-              [255, 255, 255]]}
+preset_icy = {
+    "ICE-COLD BLUES": [
+        [ 0,   128, 255 ],
+        [ 135, 0,   255 ],
+        [ 255, 255, 255 ]
+    ]
+}
 
-preset_hot = {"RED-HOT FIRE":
-              [[255, 0, 0],
-               [255, 170, 0],
-               [255, 255, 0],
-              [255, 255, 255]]}
-
-# Add your own presets here!
-
-# preset_template = {"PRESET NAME":
-#                      [[R, G, B],
-#                      [R, G, B],
-#                      [R, G, B]]}
+preset_hot =  {
+    "RED-HOT FIRE": [
+        [ 255, 0,   0   ],
+        [ 255, 170, 0   ],
+        [ 255, 255, 0   ],
+        [ 255, 255, 255 ]
+    ]
+}
 
 preset_colours.update(preset_rainbow)
 preset_colours.update(preset_traffic)
