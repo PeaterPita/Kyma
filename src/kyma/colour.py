@@ -4,7 +4,7 @@ from math import ceil, floor
 
 from rich.console import Console
 
-from kyma.generic import get_int
+from kyma.generic import get_number_input
 
 console = Console()
 
@@ -14,19 +14,19 @@ def determine_gradient_points(num_points: int):
     gradient_points = []
     # Loop to get RGB values for each gradient point
     for i in range(num_points):
-        r = get_int(
+        r = get_number_input(
             f"Enter red value (0-255) of point {i + 1}/{num_points}: ",
             255,
             upper=255,
             lower=0,
         )
-        g = get_int(
+        g = get_number_input(
             f"Enter green value (0-255) of point {i + 1}/{num_points}: ",
             255,
             upper=255,
             lower=0,
         )
-        b = get_int(
+        b = get_number_input(
             f"Enter blue value (0-255) of point {i + 1}/{num_points}: ",
             255,
             upper=255,

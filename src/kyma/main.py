@@ -9,7 +9,7 @@ from rich.console import Console
 from rich.panel import Panel
 
 from kyma.colour import determine_gradient_points, new_colourise_value
-from kyma.generic import get_float, get_int
+from kyma.generic import get_number_input
 from kyma.presets import preset_colours
 
 console = Console()
@@ -37,30 +37,38 @@ def print_summary_bar(
     per = f"PER: {persistence}"
     lac = f"LAC: {lacunarity}"
     joined_text = " | ".join([seed, size, sca, otv, per, lac])
-    panel = Panel(
-        Align.center(joined_text), style="bold", width=num_cols * 2
-    )  # This wont align if show_value is true, but since that dramatically increases width, this is acceptable
+    panel = Panel(Align.center(joined_text), style="bold", width=num_cols * 2)
+
+    # This wont align if show_value is true;
+    # but since that dramatically increases width, this is acceptable
     console.print(panel)
 
 
 def initialise():
     """Initialise settings by getting user input."""
-
     # 1: Seed value
-    user_seed = get_int(
+    user_seed = get_number_input(
         "Enter a seed number (leave blank for a random value): ", generate_random_seed()
     )
     ox = OpenSimplex(seed=user_seed)
 
     # 2: Noise generation settings
-    num_rows = get_int("Enter number of rows (default 20): ", 20, upper=1000, lower=1)
-    num_cols = get_int(
+    num_rows = get_number_input(
+        "Enter number of rows (default 20): ", 20, upper=1000, lower=1
+    )
+    num_cols = get_number_input(
         "Enter number of columns (default 50): ", 50, upper=1000, lower=1
     )
-    scale = get_float("Enter scale (default 0.1): ", 0.1, upper=10, lower=0)
-    octaves = get_int("Enter number of octaves (default 1): ", 1, upper=10, lower=1)
-    persistence = get_float("Enter persistence (default 0.5): ", 0.5, upper=1, lower=0)
-    lacunarity = get_float("Enter lacunarity (default 2.0): ", 2.0, upper=10, lower=1)
+    scale = get_number_input("Enter scale (default 0.1): ", 0.1, upper=10, lower=0)
+    octaves = get_number_input(
+        "Enter number of octaves (default 1): ", 1, upper=10, lower=1
+    )
+    persistence = get_number_input(
+        "Enter persistence (default 0.5): ", 0.5, upper=1, lower=0
+    )
+    lacunarity = get_number_input(
+        "Enter lacunarity (default 2.0): ", 2.0, upper=10, lower=1
+    )
 
     # 3: Miscellanous display settings
     print(
@@ -68,17 +76,19 @@ def initialise():
     )
     print("1. Preset")
     print("2. Custom")
-    choice = get_int("Enter choice (1-2): ", 1)
+    choice = get_number_input("Enter choice (1-2): ", 1)
     if choice == 1:
         print("Available presets:")
         for i, preset_name in enumerate(preset_colours.keys(), start=1):
             console.print(f"{i}. {preset_name}")
-        preset_choice = get_int("Select a preset by number (default 1): ", 1)
+        preset_choice = get_number_input("Select a preset by number (default 1): ", 1)
         preset_names = list(preset_colours.keys())
         selected_preset = preset_names[preset_choice - 1]
         gradient = preset_colours[selected_preset]
     else:
-        gradient_points = get_int("Enter number of gradient points (default 2): ", 2)
+        gradient_points = get_number_input(
+            "Enter number of gradient points (default 2): ", 2
+        )
         gradient = determine_gradient_points(gradient_points)
 
     try:
