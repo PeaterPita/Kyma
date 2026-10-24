@@ -10,3 +10,26 @@ dependencies = [
   "rich==14.2.0",
 ]
 
+[project.scripts]
+kyma = "kyma.main:main"
+
+[build-system]
+requires = ["uv_build<0.13"]
+build-backend = "uv_build"
+
+[tool.pyright]
+include = ["src"]
+typeCheckingMode = "standard"
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = ["E", "W", "I", "B", "SIM", "UP", "F", "D", "RUF"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

@@ -2,7 +2,7 @@
 
 from math import floor, ceil
 from rich.console import Console
-from generic import get_int
+from kyma.generic import get_int
 
 console = Console()
 

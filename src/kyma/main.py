@@ -6,9 +6,9 @@ from opensimplex import OpenSimplex
 from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
-from generic import get_int, get_float
-from presets import preset_colours
-from colour import determine_gradient_points, new_colourise_value
+from kyma.generic import get_int, get_float
+from kyma.presets import preset_colours
+from kyma.colour import determine_gradient_points, new_colourise_value
 
 console = Console()
 
@@ -112,6 +112,12 @@ def generate(ox: OpenSimplex, num_rows: int, num_cols: int, scale: float, octave
         console.print()  # New line after each row
 
 
-if __name__ == "__main__":
+
+def main() -> None: 
     parameters = initialise()
     generate(*parameters)
+
+
+
+if __name__ == "__main__":
+    main()
