@@ -48,6 +48,8 @@ class KymaApp(App):
 
     # TODO: Replace with data class
     # TODO: Split gradient and show values. Theyre not params
+    # TODO: Better Init of values
+
     noiseParams = reactive(
         {
             "scale": 0.1,

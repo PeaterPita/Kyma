@@ -9,6 +9,8 @@
 # 4. Save the file and run the main program. Your preset should now show up.
 
 
+# TODO: Convert into color parser. Colors defined (and passed in) externally
+
 preset_colours = {}
 
 preset_rainbow = {

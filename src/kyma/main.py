@@ -189,11 +189,19 @@ def generate(
 
 
 def main() -> None:
+
+    # TOOD: Argument Parsing
+    # Classic mode? Without textual
+    # pass in color file
+    # pass in noise params
     from kyma.app import KymaApp
 
     app = KymaApp()
     app.run()
 
+
+# TODO: Rework into better structure
+# core/ app/ etc ?
 
 if __name__ == "__main__":
     main()
