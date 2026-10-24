@@ -11,31 +11,35 @@
 
 ## Installation
 
-This branch uses `uv` to automatically prepare a virtual environment and dependencies.
 
-Run the following command at the project root:
-
+1. Clone this repository to your local device:
+```bash 
+git clone https://github.com/PeaterPita/Kyma.git 
+cd Kyma 
 ```
-uv run src/main.py
+
+2. Run 
+```bash 
+uv run kyma
 ```
 
-If you do not have `uv` installed, you can do so via the following method:
 
-<details>
-    <summary>Windows Installation</summary>
+## Development 
 
-```powershell
-powershell -ExecutionPolicy ByPass -c "irm [https://astral.sh/uv/install.ps1](https://astral.sh/uv/install.ps1) | iex"
+<details> 
+<summary>Nix Users</summary>
+The supplied flake.nix contains a dev-shell providing the correct python and uv versions. Enter the shell through: 
+
+
+```bash
+nix develop
 ```
 
 </details>
 
-<details>
-    <summary>Linux / Mac</summary>
-
-```sh
-curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
+This project uses [UV](https://docs.astral.sh/uv/) as its python package manager. As such ensure your development environment is synced to the versions pinned in the lock file:
+```bash 
+uv sync
 ```
 
 
-</details>
