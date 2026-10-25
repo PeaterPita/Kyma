@@ -6,7 +6,7 @@ from kyma.data import ConfigOptions, NoiseParams
 
 def main() -> None:
 
-    # TOOD: Argument Parsing
+    # TODO: Argument Parsing
     # Classic mode? Without textual
     # pass in color file
     # pass in noise params
