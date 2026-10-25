@@ -4,11 +4,10 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
-from textual.widgets import Input
 
 from kyma.app.keybinds import KEYBINDS
 from kyma.app.widgets import Legend, NoiseView, SummaryBar
-from kyma.data import ConfigOptions, NoiseParams
+from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
 
 
 def normalise(value, bounds):
@@ -42,39 +41,27 @@ class KymaApp(App):
             yield Legend()
 
     ## Actions ##
-    ## TODO: Move / Refactor
     ## Debounce? Performance issues on held
 
-    ## TODO: Change to one general action
-    ## And add step and defaults to the dataclass fields. This is unmanageable
+    ## TODO: Hacky
+    def action_change(
+        self,
+        field,
+        inverse=False,
+        delta=None,
+    ):
+        meta = NoiseParamsSpec[field].metadata
 
-    def action_scale(self, delta):
+        if delta is None:
+            delta = meta["step"]
 
-        BOUNDS = (0, 10)
-        self.params = replace(
-            self.params, scale=normalise(self.params.scale + delta, BOUNDS)
-        )
+        if inverse:
+            delta *= -1
 
-    def action_octaves(self, delta):
+        cur = getattr(self.params, field)
+        new = round(min(meta["upper"], max(meta["lower"], cur + delta)), 3)
 
-        BOUNDS = (1, 10)
-        self.params = replace(
-            self.params, octaves=normalise(self.params.octaves + delta, BOUNDS)
-        )
-
-    def action_persistence(self, delta):
-
-        BOUNDS = (0, 1)
-        self.params = replace(
-            self.params, persistence=normalise(self.params.persistence + delta, BOUNDS)
-        )
-
-    def action_lacunarity(self, delta):
-
-        BOUNDS = (1, 10)
-        self.params = replace(
-            self.params, lacunarity=normalise(self.params.lacunarity + delta, BOUNDS)
-        )
+        self.params = replace(self.params, **{field: new})
 
     def action_toggle_debug(self):
         self.config = replace(self.config, show_value=not self.config.show_value)

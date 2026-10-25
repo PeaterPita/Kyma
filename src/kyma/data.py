@@ -1,15 +1,24 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field, fields
 
 from kyma.core.generate import generate_random_seed
+
+
+def _param_helper(default, step, lower=0, upper=10):
+    return field(
+        default=default, metadata={"step": step, "lower": lower, "upper": upper}
+    )
 
 
 @dataclass
 class NoiseParams:
     seed: int = generate_random_seed()
-    scale: float = 0.1
-    octaves: int = 1
-    persistence: float = 0.5
-    lacunarity: float = 2.0
+    scale: float = _param_helper(0.1, 0.01)
+    octaves: int = _param_helper(1, 1, 1, 10)
+    persistence: float = _param_helper(0.5, 0.01, 0, 1)
+    lacunarity: float = _param_helper(2.0, 0.01, 1)
+
+
+NoiseParamsSpec = {f.name: f for f in fields(NoiseParams)}
 
 
 @dataclass
