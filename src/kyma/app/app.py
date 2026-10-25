@@ -11,6 +11,10 @@ from kyma.app.widgets import Legend, NoiseView, SummaryBar
 from kyma.data import ConfigOptions, NoiseParams
 
 
+def normalise(value, bounds):
+    return round(min(bounds[1], max(bounds[0], value)), 3)
+
+
 class KymaApp(App):
     CSS_PATH = "global.tcss"
 
@@ -37,20 +41,39 @@ class KymaApp(App):
 
             yield Legend()
 
-    def on_input_submitted(self, evt: Input.Submitted):
-        if evt.input.id == "scale":
-            self.params = replace(self.params, scale=float(evt.value))
-
     ## Actions ##
     ## TODO: Move / Refactor
     ## Debounce? Performance issues on held
+
+    ## TODO: Change to one general action
+    ## And add step and defaults to the dataclass fields. This is unmanageable
 
     def action_scale(self, delta):
 
         BOUNDS = (0, 10)
         self.params = replace(
-            self.params,
-            scale=round(min(BOUNDS[1], max(BOUNDS[0], self.params.scale + delta)), 2),
+            self.params, scale=normalise(self.params.scale + delta, BOUNDS)
+        )
+
+    def action_octaves(self, delta):
+
+        BOUNDS = (1, 10)
+        self.params = replace(
+            self.params, octaves=normalise(self.params.octaves + delta, BOUNDS)
+        )
+
+    def action_persistence(self, delta):
+
+        BOUNDS = (0, 1)
+        self.params = replace(
+            self.params, persistence=normalise(self.params.persistence + delta, BOUNDS)
+        )
+
+    def action_lacunarity(self, delta):
+
+        BOUNDS = (1, 10)
+        self.params = replace(
+            self.params, lacunarity=normalise(self.params.lacunarity + delta, BOUNDS)
         )
 
     def action_toggle_debug(self):

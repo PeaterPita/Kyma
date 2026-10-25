@@ -4,46 +4,61 @@ KEYBINDS = [
     #######################################
     {
         "group": "Controls",
-        "key": "=",
-        "display": "+",
-        "action": "scale(0.1)",
-        "desc": "Increase Scale Factor",
-    },
-    {
-        "group": "Controls",
-        "key": "-",
-        "display": "",
-        "action": "scale(-0.1)",
-        "desc": "Decrease Scale Factor",
-    },
-    ######################################
-    {
-        "group": "Controls",
         "key": "q",
         "display": "",
-        "action": "octaves()",
-        "desc": "Increase Octave Count",
+        "action": "scale(0.01)",
+        "desc": "Increase Scale Factor",
     },
     {
         "group": "Controls",
         "key": "a",
         "display": "",
-        "action": "octaves()",
-        "desc": "Decrease Octave Count",
+        "action": "scale(-0.01)",
+        "desc": "Decrease Scale Factor",
     },
-    #######################################
+    ######################################
     {
         "group": "Controls",
         "key": "w",
         "display": "",
-        "action": "persistence()",
-        "desc": "\\[PH]",
+        "action": "octaves(1)",
+        "desc": "Increase Octave Count",
     },
     {
         "group": "Controls",
         "key": "s",
         "display": "",
-        "action": "persistence()",
+        "action": "octaves(-1)",
+        "desc": "Decrease Octave Count",
+    },
+    #######################################
+    {
+        "group": "Controls",
+        "key": "e",
+        "display": "",
+        "action": "persistence(0.01)",
+        "desc": "\\[PH]",
+    },
+    {
+        "group": "Controls",
+        "key": "d",
+        "display": "",
+        "action": "persistence(-0.01)",
+        "desc": "\\[PH]",
+    },
+    #######################################
+    {
+        "group": "Controls",
+        "key": "r",
+        "display": "",
+        "action": "lacunarity(0.1)",
+        "desc": "\\[PH]",
+    },
+    {
+        "group": "Controls",
+        "key": "f",
+        "display": "",
+        "action": "lacunarity(-0.1)",
         "desc": "\\[PH]",
     },
     #######################################
