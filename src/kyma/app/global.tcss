@@ -1,0 +1,8 @@
+NoiseView {
+    height: 1fr;
+    content-align: center middle;
+}
+
+Legend {
+    width: 35;
+}
