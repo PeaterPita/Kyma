@@ -1,4 +1,4 @@
-from dataclasses import dataclass, replace
+from dataclasses import replace
 
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal, Vertical
@@ -6,27 +6,7 @@ from textual.reactive import reactive
 from textual.widgets import Input
 
 from kyma.app.widgets import Legend, NoiseView, SummaryBar
-from kyma.core.generate import generate_random_seed
-
-## Data ##
-
-
-@dataclass
-class NoiseParams:
-    seed: int = generate_random_seed()
-    scale: float = 0.1
-    octaves: int = 1
-    persistence: float = 0.5
-    lacunarity: float = 2.0
-
-
-@dataclass
-class ConfigOptions:
-    preset: str = "VIBRANT RAINBOW"
-    show_value: bool = False
-
-
-## App ##
+from kyma.data import ConfigOptions, NoiseParams
 
 
 class KymaApp(App):
@@ -41,9 +21,15 @@ class KymaApp(App):
         }
     """
 
-    # TODO: Better Init of values
-    params = reactive(NoiseParams())
-    config = reactive(ConfigOptions())
+    # TODO: Try to remove if possible
+    params = reactive(NoiseParams)
+    config = reactive(ConfigOptions)
+
+    def __init__(self, params, config):
+        super().__init__()
+
+        self.params = params
+        self.config = config
 
     def compose(self) -> ComposeResult:
 
