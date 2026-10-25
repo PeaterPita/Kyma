@@ -50,6 +50,7 @@ def layered_noise_array(
 # show_value: bool,
 
 
+## TODO: Optimise. Return np array. Handle rich text in app
 def generate(
     ox: OpenSimplex,
     params,

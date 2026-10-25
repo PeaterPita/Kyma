@@ -44,6 +44,8 @@ class KymaApp(App):
     ## Debounce? Performance issues on held
 
     ## TODO: Hacky
+    ## TODO: App is still technically owning the data.
+    ## Move bounds checking / updating into core app and pass through data?
     def action_change(
         self,
         field,

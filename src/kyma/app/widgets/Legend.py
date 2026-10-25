@@ -4,6 +4,8 @@ from textual.widgets import Label, Rule, Static
 from kyma.app.keybinds import KEYBINDS
 
 
+# TODO: Collapsible / Scrollable
+# Or even a toggle between grouped / flat rendering
 class Legend(Static):
     def compose(self) -> ComposeResult:
         groups = dict()

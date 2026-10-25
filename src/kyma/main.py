@@ -20,3 +20,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+## TODO: Program wide
+## Work on Doc Strings and Type hinting

@@ -4,37 +4,7 @@ from math import ceil, floor
 
 from rich.console import Console
 
-from kyma.core.generic import get_number_input
-
 console = Console()
-
-
-def determine_gradient_points(num_points: int):
-    """Determine key gradient colours for noise mapping."""
-    gradient_points = []
-    # Loop to get RGB values for each gradient point
-    for i in range(num_points):
-        r = get_number_input(
-            f"Enter red value (0-255) of point {i + 1}/{num_points}: ",
-            255,
-            upper=255,
-            lower=0,
-        )
-        g = get_number_input(
-            f"Enter green value (0-255) of point {i + 1}/{num_points}: ",
-            255,
-            upper=255,
-            lower=0,
-        )
-        b = get_number_input(
-            f"Enter blue value (0-255) of point {i + 1}/{num_points}: ",
-            255,
-            upper=255,
-            lower=0,
-        )
-        console.print(f"Gradient point {i + 1} set.", style=f"rgb({r},{g},{b})")
-        gradient_points.append([r, g, b])
-    return gradient_points
 
 
 def new_colourise_value(value: float, gradient: list) -> str:

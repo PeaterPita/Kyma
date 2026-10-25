@@ -1,5 +1,6 @@
 ## TODO: Replace with dataclass with defaults
 ## TODO: Helper for general Inc, Dec, Reset binds
+## TODO: Size control keybinds. (Arrows)
 
 KEYBINDS = [
     #######################################
@@ -99,15 +100,17 @@ KEYBINDS = [
         "desc": "Reset All",
     },
     {
+        # TODO: Implement Legend Toggle
         "group": "General",
-        "key": "L",
+        "key": "ctrl+L",
         "display": "",
         "action": "",
         "desc": "Toggle Legend Display",
     },
     {
+        # TODO: Implement Fullscreen
         "group": "General",
-        "key": "F",
+        "key": "ctrl+F",
         "display": "",
         "action": "",
         "desc": "Toggle Fullscreen",
