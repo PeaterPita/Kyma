@@ -1,4 +1,5 @@
 ## TODO: Replace with dataclass with defaults
+## TODO: Helper for general Inc, Dec, Reset binds
 
 KEYBINDS = [
     #######################################
@@ -16,6 +17,13 @@ KEYBINDS = [
         "action": "change('scale', True)",
         "desc": "Decrease Scale Factor",
     },
+    {
+        "group": "Controls",
+        "key": "z",
+        "display": "",
+        "action": "reset('scale')",
+        "desc": "Reset scale value to default",
+    },
     ######################################
     {
         "group": "Controls",
@@ -30,6 +38,13 @@ KEYBINDS = [
         "display": "",
         "action": "change('octaves', True)",
         "desc": "Decrease Octave Count",
+    },
+    {
+        "group": "Controls",
+        "key": "x",
+        "display": "",
+        "action": "reset('octaves')",
+        "desc": "Reset Octaves value to default",
     },
     #######################################
     {
@@ -46,6 +61,13 @@ KEYBINDS = [
         "action": "change('persistence', True)",
         "desc": "\\[PH]",
     },
+    {
+        "group": "Controls",
+        "key": "c",
+        "display": "",
+        "action": "reset('persistence')",
+        "desc": "Reset Persistence value to default",
+    },
     #######################################
     {
         "group": "Controls",
@@ -61,7 +83,21 @@ KEYBINDS = [
         "action": "change('lacunarity', True)",
         "desc": "\\[PH]",
     },
+    {
+        "group": "Controls",
+        "key": "v",
+        "display": "",
+        "action": "reset('lacunarity')",
+        "desc": "Reset Lacunarity value to default",
+    },
     #######################################
+    {
+        "group": "General",
+        "key": "escape",
+        "display": "",
+        "action": "reset()",
+        "desc": "Reset All",
+    },
     {
         "group": "General",
         "key": "L",

@@ -63,5 +63,12 @@ class KymaApp(App):
 
         self.params = replace(self.params, **{field: new})
 
+    def action_reset(self, field=None):
+        if field:
+            default = NoiseParamsSpec[field].default
+            self.params = replace(self.params, **{field: default})
+        else:
+            self.params = NoiseParams()
+
     def action_toggle_debug(self):
         self.config = replace(self.config, show_value=not self.config.show_value)
