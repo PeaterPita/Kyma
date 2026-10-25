@@ -5,15 +5,12 @@ from random import randint
 import numpy as np
 from opensimplex import OpenSimplex
 from rich.align import Align
-from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 
 from kyma.colour import determine_gradient_points, new_colourise_value
 from kyma.generic import get_number_input
 from kyma.presets import preset_colours
-
-# console = Console()
 
 
 def generate_random_seed() -> int:
@@ -154,6 +151,7 @@ def layered_noise_array(
 def generate(
     ox: OpenSimplex,
     params,
+    config,
     width,
     height,
 ):
@@ -162,19 +160,19 @@ def generate(
         ox,
         width,
         height,
-        scale=params["scale"],
-        octaves=params["octaves"],
-        persistence=params["persistence"],
-        lacunarity=params["lacunarity"],
+        scale=params.scale,
+        octaves=params.octaves,
+        persistence=params.persistence,
+        lacunarity=params.lacunarity,
     )
 
     frame = Text()
     for i in range(height):
         for j in range(width):
             noise_value = noise_map[i][j]
-            colour = new_colourise_value(noise_value, params["gradient"])
+            colour = new_colourise_value(noise_value, preset_colours[config.preset])
 
-            if not params["show_value"]:
+            if not config.show_value:
                 frame.append(
                     "██",
                     style=colour,

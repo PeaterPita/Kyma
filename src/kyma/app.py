@@ -1,39 +1,61 @@
-# Split widgets into seperate files
+from dataclasses import dataclass, replace
+
 from textual.app import App, ComposeResult
-from textual.containers import Horizontal
+from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
 from textual.widgets import Input
 
-from kyma.presets import preset_colours
+from kyma.main import generate_random_seed
 from kyma.widgets import Legend, NoiseView, SummaryBar
+
+## Data ##
+
+
+@dataclass
+class NoiseParams:
+    seed: int = generate_random_seed()
+    scale: float = 0.1
+    octaves: int = 1
+    persistence: float = 0.5
+    lacunarity: float = 2.0
+
+
+@dataclass
+class ConfigOptions:
+    preset: str = "VIBRANT RAINBOW"
+    show_value: bool = False
+
+
+## App ##
 
 
 class KymaApp(App):
-    preset_names = list(preset_colours.keys())
-    selected_preset = preset_names[0]
-
-    # TODO: Replace with data class
-    # TODO: Split gradient and show values. Theyre not params
-    # TODO: Better Init of values
-
-    noiseParams = reactive(
-        {
-            "scale": 0.1,
-            "octaves": 1,
-            "persistence": 0.5,
-            "lacunarity": 2.0,
-            "gradient": preset_colours[selected_preset],
-            "show_value": False,
+    CSS = """
+        NoiseView {
+            height: 1fr;
+            content-align: center middle;
         }
-    )
+
+        Legend {
+            width: 35;
+        }
+    """
+
+    # TODO: Better Init of values
+    params = reactive(NoiseParams())
+    config = reactive(ConfigOptions())
 
     def compose(self) -> ComposeResult:
-        yield SummaryBar("Testing")
-        yield Input(id="scale", value="0.1", type="number")
+
         with Horizontal():
-            yield NoiseView()
+            with Vertical():
+                yield SummaryBar()
+                yield NoiseView()
+
+                yield Input(id="scale", value="0.1", type="number")
+
             yield Legend()
 
     def on_input_submitted(self, evt: Input.Submitted):
         if evt.input.id == "scale":
-            self.noiseParams = {**self.noiseParams, "scale": float(evt.value)}
+            self.params = replace(self.params, scale=float(evt.value))

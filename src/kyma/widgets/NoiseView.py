@@ -6,11 +6,15 @@ from kyma.main import generate
 
 class NoiseView(Static):
     def on_mount(self):
-        self.watch(self.app, "noiseParams", self._refresh)
+        self.watch(self.app, "params", self._refresh)
+        self.watch(self.app, "config", self._refresh)
 
-    def _refresh(self, params):
+    def _refresh(self, _):
 
         ox = OpenSimplex(seed=4)
 
-        frame = generate(ox, params, 70, 50)
+        params = self.app.params  # pyright: ignore[reportAttributeAccessIssue]
+        config = self.app.config  # pyright: ignore[reportAttributeAccessIssue]
+
+        frame = generate(ox, params, config, 70, 50)
         self.update(frame)
