@@ -1,7 +1,7 @@
 from opensimplex import OpenSimplex
 from textual.widgets import Static
 
-from kyma.main import generate
+from kyma.core.generate import generate
 
 
 class NoiseView(Static):

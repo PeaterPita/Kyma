@@ -4,7 +4,7 @@ from math import ceil, floor
 
 from rich.console import Console
 
-from kyma.generic import get_number_input
+from kyma.core.generic import get_number_input
 
 console = Console()
 

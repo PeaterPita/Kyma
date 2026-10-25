@@ -5,8 +5,8 @@ from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
 from textual.widgets import Input
 
-from kyma.main import generate_random_seed
-from kyma.widgets import Legend, NoiseView, SummaryBar
+from kyma.app.widgets import Legend, NoiseView, SummaryBar
+from kyma.core.generate import generate_random_seed
 
 ## Data ##
 
