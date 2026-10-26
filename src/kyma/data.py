@@ -30,4 +30,4 @@ class ConfigOptions:
     # TODO: Still need control to change gradient / preset
     preset: str = "VIBRANT RAINBOW"
     show_value: bool = False
-    temp: float = 0.0
+    playing: bool = False

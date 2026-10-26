@@ -23,13 +23,6 @@ class KymaApp(App):
         Binding(bind["key"], bind["action"], bind["desc"]) for bind in KEYBINDS
     ]
 
-    BINDINGS.extend(
-        [
-            Binding("j", "temp(0.1)", description="PH"),
-            Binding("k", "temp(-0.1)", description="PH"),
-        ]
-    )
-
     def __init__(self, params, config):
         super().__init__()
 
@@ -47,12 +40,8 @@ class KymaApp(App):
 
     ## Actions ##
 
-    def action_temp(self, delta):
-        new = self.config.temp + delta
-        if new <= 1:
-            new = 1
-
-        self.config = replace(self.config, temp=new)
+    def action_toggle_play(self):
+        self.config = replace(self.config, playing=not self.config.playing)
 
     ## TODO: Hacky
     ## TODO: App is still technically owning the data.

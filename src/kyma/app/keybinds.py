@@ -116,6 +116,13 @@ KEYBINDS = [
         "desc": "Toggle Fullscreen",
     },
     {
+        "group": "General",
+        "key": "space",
+        "display": "Space",
+        "action": "toggle_play()",
+        "desc": "Toggle Anaimtion Playing",
+    },
+    {
         "group": "Debug",
         "key": "0",
         "display": "",

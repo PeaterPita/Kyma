@@ -19,10 +19,11 @@ class SummaryBar(Static):
         otv = f"OCT: {params.octaves}"
         per = f"PER: {params.persistence}"
         lac = f"LAC: {params.lacunarity}"
-
-        t = f"T: {config.temp}"
+        # Replace with real FPS
+        fps = "FPS: 30"
+        playing = f"PLAY: {config.playing}"
 
         val = f"VALUES: {'Shown' if config.show_value else 'Hidden'}"
 
-        joined_text = " | ".join([sca, otv, per, lac, val, seed, t])
+        joined_text = " | ".join([sca, otv, per, lac, val, seed, fps, playing])
         self.update(Panel(Align.center(joined_text), style="bold"))
