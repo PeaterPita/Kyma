@@ -2,6 +2,8 @@
 ## TODO: Helper for general Inc, Dec, Reset binds
 ## TODO: Size control keybinds. (Arrows)
 
+## TODO: Seriously gotta tweak keybinds soon
+
 KEYBINDS = [
     #######################################
     {
@@ -90,6 +92,36 @@ KEYBINDS = [
         "display": "",
         "action": "reset('lacunarity')",
         "desc": "Reset Lacunarity value to default",
+    },
+    #######################################
+    {
+        "group": "Controls",
+        "key": "t",
+        "display": "",
+        "action": "change_fps(1)",
+        "desc": "Increase Animation FPS",
+    },
+    {
+        "group": "Controls",
+        "key": "g",
+        "display": "",
+        "action": "change_fps(-1)",
+        "desc": "Reduce Animation FPS",
+    },
+    #######################################
+    {
+        "group": "Controls",
+        "key": "y",
+        "display": "",
+        "action": "change_speed(0.1)",
+        "desc": "Increase Animation Speed",
+    },
+    {
+        "group": "Controls",
+        "key": "h",
+        "display": "",
+        "action": "change_speed(-0.1)",
+        "desc": "Reduce Animation Speed",
     },
     #######################################
     {

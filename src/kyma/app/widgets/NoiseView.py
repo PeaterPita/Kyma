@@ -5,11 +5,6 @@ from textual.widgets import Static
 
 from kyma.core.generate import generate
 
-# TODO: Move to config
-# No idea how variable FPS is going to work. Reset interval timing?
-FPS = 1 / 30
-SPEED = 0.1
-
 
 class NoiseView(Static):
     def on_mount(self):
@@ -21,9 +16,24 @@ class NoiseView(Static):
         self._start = time.monotonic()
         self._marked = True
 
+        self.fps = 30
+        self._timer = self.set_interval(1 / self.fps, self._tick)
+
         self.watch(self.app, "params", self._mark)
-        self.watch(self.app, "config", self._mark)
-        self.set_interval(FPS, self._tick)
+        self.watch(self.app, "config", self._conf_changed)
+
+    def _conf_changed(self, config):
+        config_fps = config.fps
+
+        if config_fps != self.fps:
+            self.fps = config_fps
+
+            if self._timer:
+                self._timer.stop()
+
+            self._timer = self.set_interval(1 / self.fps, self._tick)
+
+        self._mark(None)
 
     def _mark(self, _):
         self._marked = True
@@ -37,7 +47,7 @@ class NoiseView(Static):
         self._start = now
 
         if config.playing:
-            self.t += dt * SPEED
+            self.t += dt * config.speed
             self._marked = True
 
         if not self._marked:

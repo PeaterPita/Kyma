@@ -20,7 +20,7 @@ class SummaryBar(Static):
         per = f"PER: {params.persistence}"
         lac = f"LAC: {params.lacunarity}"
         # Replace with real FPS
-        fps = "FPS: 30"
+        fps = f"FPS: {config.fps}"
         playing = f"PLAY: {config.playing}"
 
         val = f"VALUES: {'Shown' if config.show_value else 'Hidden'}"

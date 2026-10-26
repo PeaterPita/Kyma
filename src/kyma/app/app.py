@@ -36,6 +36,8 @@ class KymaApp(App):
                 yield SummaryBar()
                 yield NoiseView()
 
+                # TODO: Controls widget. Play/Pause, Scrub, FPS, Speed
+
             yield Legend()
 
     ## Actions ##
@@ -43,9 +45,17 @@ class KymaApp(App):
     def action_toggle_play(self):
         self.config = replace(self.config, playing=not self.config.playing)
 
+    def action_change_fps(self, delta):
+        new = self.config.fps + delta
+        self.config = replace(self.config, fps=max(1, new))
+
+    def action_change_speed(self, delta):
+        self.config = replace(self.config, speed=self.config.speed + delta)
+
     ## TODO: Hacky
     ## TODO: App is still technically owning the data.
     ## Move bounds checking / updating into core app and pass through data?
+    ## TOOD: Make this also work with config options
     def action_change(
         self,
         field,

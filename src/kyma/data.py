@@ -25,9 +25,13 @@ class NoiseParams:
 NoiseParamsSpec = {f.name: f for f in fields(NoiseParams)}
 
 
+# TODO: a ConfigSpec map might be needed so the same param helper could be used.
+# This would simplify changing fps and speed, values.
 @dataclass
 class ConfigOptions:
     # TODO: Still need control to change gradient / preset
     preset: str = "VIBRANT RAINBOW"
     show_value: bool = False
     playing: bool = False
+    fps: int = 30
+    speed: float = 0.1
