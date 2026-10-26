@@ -152,7 +152,7 @@ KEYBINDS = [
         "key": "space",
         "display": "Space",
         "action": "toggle_play()",
-        "desc": "Toggle Anaimtion Playing",
+        "desc": "Toggle Animation Playing",
     },
     {
         "group": "Debug",
