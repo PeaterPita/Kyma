@@ -20,7 +20,9 @@ class SummaryBar(Static):
         per = f"PER: {params.persistence}"
         lac = f"LAC: {params.lacunarity}"
 
+        t = f"T: {config.temp}"
+
         val = f"VALUES: {'Shown' if config.show_value else 'Hidden'}"
 
-        joined_text = " | ".join([sca, otv, per, lac, val, seed])
+        joined_text = " | ".join([sca, otv, per, lac, val, seed, t])
         self.update(Panel(Align.center(joined_text), style="bold"))

@@ -19,15 +19,22 @@ class KymaApp(App):
     params = reactive(NoiseParams)
     config = reactive(ConfigOptions)
 
+    BINDINGS = [  # noqa: RUF012
+        Binding(bind["key"], bind["action"], bind["desc"]) for bind in KEYBINDS
+    ]
+
+    BINDINGS.extend(
+        [
+            Binding("j", "temp(0.1)", description="PH"),
+            Binding("k", "temp(-0.1)", description="PH"),
+        ]
+    )
+
     def __init__(self, params, config):
         super().__init__()
 
         self.params = params
         self.config = config
-
-    BINDINGS = [  # noqa: RUF012
-        Binding(bind["key"], bind["action"], bind["desc"]) for bind in KEYBINDS
-    ]
 
     def compose(self) -> ComposeResult:
 
@@ -39,6 +46,13 @@ class KymaApp(App):
             yield Legend()
 
     ## Actions ##
+
+    def action_temp(self, delta):
+        new = self.config.temp + delta
+        if new <= 1:
+            new = 1
+
+        self.config = replace(self.config, temp=new)
 
     ## TODO: Hacky
     ## TODO: App is still technically owning the data.

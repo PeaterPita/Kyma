@@ -11,6 +11,7 @@ def layered_noise_array(
     ox: OpenSimplex,
     width: float,
     height: float,
+    t: float,
     scale: float,
     octaves: int,
     persistence: float,
@@ -24,9 +25,12 @@ def layered_noise_array(
 
     x = np.arange(width) * scale
     y = np.arange(height) * scale
+    z = np.array([t], dtype=np.float32)
 
     for _ in range(octaves):
-        layer = ox.noise2array(x * frequency, y * frequency)
+        map3 = ox.noise3array(x * frequency, y * frequency, z * frequency)
+
+        layer = map3[0]
         total += layer * amplitude
         max_value += amplitude
         amplitude *= persistence
@@ -52,9 +56,9 @@ def generate(
     config: ConfigOptions,
     width: int,
     height: int,
+    t: float,
 ):
     """Generate and display the noise grid."""
-
     if ox is None:
         # Shouldn't ever happen but who knows
         return
@@ -63,6 +67,7 @@ def generate(
         ox,
         width,
         height,
+        t,
         scale=params.scale,
         octaves=params.octaves,
         persistence=params.persistence,

@@ -23,5 +23,5 @@ class NoiseView(Static):
             self._ox = OpenSimplex(seed=params.seed)
             self._last_seed = params.seed
 
-        frame = generate(self._ox, params, config, 70, 50)
+        frame = generate(self._ox, params, config, 70, 50, config.temp)
         self.update(frame)
