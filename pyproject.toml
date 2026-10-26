@@ -1,6 +1,7 @@
 [project]
 name = "Kyma"
 version = "0.1.0"
+requires-python = ">= 3.11"
 dependencies = [
   "Pygments>=2.19.2",
   "markdown-it-py>=4.0.0",

@@ -51,6 +51,7 @@ def layered_noise_array(
 
 
 ## TODO: Optimise. Return np array. Handle rich text in app
+## ^ Return just the values. Let the application perform the rendering. Eliminates the need for passing in config
 def generate(
     ox: OpenSimplex,
     params,

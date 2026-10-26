@@ -1,18 +1,53 @@
 """Main module for generating and displaying 2D simplex noise in the terminal."""
 
+import argparse
+
 from kyma.app.app import KymaApp
-from kyma.data import ConfigOptions, NoiseParams
+from kyma.core.presets import preset_colours
+from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
+
+
+# TODO: Classic mode? Without textual
+# TODO: pass in color file
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    for spec, field in NoiseParamsSpec.items():
+        parser.add_argument(
+            f"--{spec}",
+            help=f"Startup {spec} Value"
+            + (" (default: %(default)s)" if spec != "seed" else ""),
+            type=(type(field.default)),
+            metavar="",
+            default=(field.default),
+        )
+
+    parser.add_argument(
+        "--preset",
+        help="Set the color gradient to one of the presets.",
+        type=str.upper,
+        choices=preset_colours,
+        default="VIBRANT RAINBOW",
+    )
+
+    return parser.parse_args()
 
 
 def main() -> None:
+    args = parse_args()
 
-    # TODO: Argument Parsing
-    # Classic mode? Without textual
-    # pass in color file
-    # pass in noise params
+    arg_override = {}
+    for spec in NoiseParamsSpec:
+        args_val = getattr(args, spec)
+        if args_val is not None:
+            arg_override[spec] = args_val
 
-    params = NoiseParams(scale=1.33)
-    config = ConfigOptions()
+    config_override = {}
+    if args.preset:
+        config_override["preset"] = args.preset
+
+    params = NoiseParams(**arg_override)
+    config = ConfigOptions(**config_override)
 
     app = KymaApp(params=params, config=config)
     app.run()

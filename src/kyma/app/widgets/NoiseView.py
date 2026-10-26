@@ -10,11 +10,10 @@ class NoiseView(Static):
         self.watch(self.app, "config", self._refresh)
 
     def _refresh(self, _):
-
-        ox = OpenSimplex(seed=4)
-
         params = self.app.params  # pyright: ignore[reportAttributeAccessIssue]
         config = self.app.config  # pyright: ignore[reportAttributeAccessIssue]
+
+        ox = OpenSimplex(seed=params.seed)
 
         frame = generate(ox, params, config, 70, 50)
         self.update(frame)

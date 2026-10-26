@@ -13,7 +13,7 @@ class SummaryBar(Static):
         params = self.app.params  # pyright: ignore[reportAttributeAccessIssue]
         config = self.app.config  # pyright: ignore[reportAttributeAccessIssue]
 
-        # seed = f"SEED: {user_seed}"
+        seed = f"SEED: {params.seed}"
         # size = f"SIZE: {height} x {width}"
         sca = f"SCL: {params.scale}"
         otv = f"OCT: {params.octaves}"
@@ -22,5 +22,5 @@ class SummaryBar(Static):
 
         val = f"VALUES: {'Shown' if config.show_value else 'Hidden'}"
 
-        joined_text = " | ".join([sca, otv, per, lac, val])
+        joined_text = " | ".join([sca, otv, per, lac, val, seed])
         self.update(Panel(Align.center(joined_text), style="bold"))
