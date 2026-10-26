@@ -1,12 +1,16 @@
 from dataclasses import dataclass, field, fields
-
-from kyma.core.generate import generate_random_seed
+from random import randint
 
 
 def _param_helper(default, step, lower=0, upper=10):
     return field(
         default=default, metadata={"step": step, "lower": lower, "upper": upper}
     )
+
+
+def generate_random_seed() -> int:
+    """Generate a random seed."""
+    return randint(0, 1000000)
 
 
 @dataclass

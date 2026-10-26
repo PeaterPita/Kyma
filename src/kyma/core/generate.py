@@ -1,16 +1,10 @@
-from random import randint
-
 import numpy as np
 from opensimplex import OpenSimplex
 from rich.text import Text
 
 from kyma.core.colour import new_colourise_value
 from kyma.core.presets import preset_colours
-
-
-def generate_random_seed() -> int:
-    """Generate a random seed."""
-    return randint(0, 1000000)
+from kyma.data import ConfigOptions, NoiseParams
 
 
 def layered_noise_array(
@@ -53,13 +47,18 @@ def layered_noise_array(
 ## TODO: Optimise. Return np array. Handle rich text in app
 ## ^ Return just the values. Let the application perform the rendering. Eliminates the need for passing in config
 def generate(
-    ox: OpenSimplex,
-    params,
-    config,
-    width,
-    height,
+    ox: OpenSimplex | None,
+    params: NoiseParams,
+    config: ConfigOptions,
+    width: int,
+    height: int,
 ):
     """Generate and display the noise grid."""
+
+    if ox is None:
+        # Shouldn't ever happen but who knows
+        return
+
     noise_map = layered_noise_array(
         ox,
         width,

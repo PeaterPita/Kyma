@@ -10,12 +10,10 @@ from kyma.app.widgets import Legend, NoiseView, SummaryBar
 from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
 
 
-def normalise(value, bounds):
-    return round(min(bounds[1], max(bounds[0], value)), 3)
-
-
 class KymaApp(App):
     CSS_PATH = "global.tcss"
+    # TODO: App wide:
+    # Notifications self.app.notify
 
     # TODO: Try to remove if possible
     params = reactive(NoiseParams)
@@ -41,7 +39,6 @@ class KymaApp(App):
             yield Legend()
 
     ## Actions ##
-    ## Debounce? Performance issues on held
 
     ## TODO: Hacky
     ## TODO: App is still technically owning the data.
