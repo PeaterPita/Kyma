@@ -2,11 +2,8 @@
 
 from math import ceil, floor
 
-from rich.console import Console
 
-console = Console()
-
-
+# TODO: Look into optimising
 def new_colourise_value(value: float, gradient: list) -> str:
     """Convert a noise value to a colored string for terminal output."""
     # Clamp value between -1 and 1

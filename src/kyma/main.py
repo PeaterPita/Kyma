@@ -2,6 +2,9 @@
 
 import argparse
 
+import numpy as np
+from opensimplex import OpenSimplex
+
 from kyma.app.app import KymaApp
 from kyma.core.presets import preset_colours
 from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
@@ -30,6 +33,13 @@ def parse_args():
         default="VIBRANT RAINBOW",
     )
 
+    parser.add_argument(
+        "--fps",
+        help="Set the Target FPS of the noise animation",
+        type=int,
+        default=30,
+    )
+
     return parser.parse_args()
 
 
@@ -46,8 +56,13 @@ def main() -> None:
     if args.preset:
         config_override["preset"] = args.preset
 
+    if args.fps:
+        config_override["fps"] = args.fps
+
     params = NoiseParams(**arg_override)
     config = ConfigOptions(**config_override)
+
+    warm_numba()
 
     app = KymaApp(params=params, config=config)
     app.run()
@@ -59,3 +74,10 @@ if __name__ == "__main__":
 
 ## TODO: Program wide
 ## Work on Doc Strings and Type hinting
+
+
+## TODO: this is required for some reason?
+## Instant Crash occurs if numba is not used before textual uses it?
+def warm_numba():
+    ox = OpenSimplex(seed=0)
+    ox.noise3array(np.arange(4) * 0.1, np.arange(4) * 0.1, np.array([0.0]))
