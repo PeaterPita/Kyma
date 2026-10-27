@@ -1,5 +1,7 @@
 <div align="center">
-    <h1>Kyma</h1>
+    <picture> 
+        <img alt="Kyma - Banner" src="assets/banner-dark.svg"/>
+    </picture>
     <p> A Tool to visualise simplex noise in a command-line interface.
 </div>
 
