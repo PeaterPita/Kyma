@@ -1,16 +1,19 @@
 import numpy as np
 from opensimplex import OpenSimplex
-from rich.text import Text
+from rich.segment import Segment
+from rich.style import Style
 
 from kyma.core.colour import new_colourise_value
 from kyma.core.presets import preset_colours
-from kyma.data import ConfigOptions, NoiseParams
+from kyma.data import NoiseParams
+
+STEPS = 128
 
 
 def layered_noise_array(
     ox: OpenSimplex,
-    width: float,
-    height: float,
+    width: int,
+    height: int,
     t: float,
     scale: float,
     octaves: int,
@@ -39,21 +42,9 @@ def layered_noise_array(
     return total / max_value
 
 
-### params
-# scale: float,
-# octaves: int,
-# persistence: float,
-# lacunarity: float,
-# gradient: list,
-# show_value: bool,
-
-
-## TODO: Optimise. Return np array. Handle rich text in app
-## ^ Return just the values. Let the application perform the rendering. Eliminates the need for passing in config
 def generate(
     ox: OpenSimplex | None,
     params: NoiseParams,
-    config: ConfigOptions,
     width: int,
     height: int,
     t: float,
@@ -74,21 +65,18 @@ def generate(
         lacunarity=params.lacunarity,
     )
 
-    frame = Text()
-    for i in range(height):
-        for j in range(width):
-            noise_value = noise_map[i][j]
-            colour = new_colourise_value(noise_value, preset_colours[config.preset])
+    index = np.rint((noise_map + 1.0) * 0.5 * (STEPS - 1))
+    return np.clip(index, 0, STEPS - 1).astype(np.uint8)
 
-            if not config.show_value:
-                frame.append(
-                    "██",
-                    style=colour,
-                )
-            else:
-                frame.append(f"[{noise_value:+.2f}]", style=colour)
 
-        # New line after each row
-        frame.append("\n")
+def gen_color_table(preset, show_value):
+    segments = []
+    for v in np.linspace(-1.0, 1.0, STEPS):
+        colour = new_colourise_value(float(v), preset_colours[preset])
 
-    return frame
+        # TODO: Look into half block rendering
+        # Could use `▀` symbols to "double" vertical resolution
+        text = f"[{v:+.2f}]" if show_value else "██"
+        segments.append(Segment(text, Style.parse(colour)))
+
+    return segments

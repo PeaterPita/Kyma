@@ -2,12 +2,15 @@ import time
 
 from opensimplex import OpenSimplex
 from textual.message import Message
-from textual.widgets import Static
+from textual.strip import Strip
+from textual.widget import Widget
 
-from kyma.core.generate import generate
+from kyma.core.generate import gen_color_table, generate
 
 
-class NoiseView(Static):
+## TODO: Centering
+## Changing from Static to a Widget has caused NoiseView to no longer be centered
+class NoiseView(Widget):
     def on_mount(self):
         self._last_seed = None
         self._ox = None
@@ -23,6 +26,12 @@ class NoiseView(Static):
         self._busy_time = 0.0
         self._timer = self.set_interval(1 / self.fps, self._tick)
 
+        # Rendering
+        self._frame = None
+        self._colour_table = []
+        self._last_render_key = None
+
+        # Watchers
         self.watch(self.app, "params", self._mark)
         self.watch(self.app, "config", self._conf_changed)
 
@@ -44,7 +53,6 @@ class NoiseView(Static):
 
     def _tick(self):
         config = self.app.config  # pyright: ignore[reportAttributeAccessIssue]
-
         now = time.monotonic()
 
         dt = now - self._start
@@ -59,8 +67,7 @@ class NoiseView(Static):
 
         self._marked = False
 
-        ## TODO: Remove config requirement. This is temp
-        self._refresh(config)
+        self._refresh()
         self._frames += 1
         self._busy_time += dt
 
@@ -72,17 +79,34 @@ class NoiseView(Static):
 
             self.post_message(self.FpsMessage(fps))
 
-    def _refresh(self, config):
+    def render_line(self, y):
+        frame = self._frame
+        table = self._colour_table
+
+        if frame is None or table is None or y >= frame.shape[0]:
+            return Strip.blank(self.size.width)
+
+        return Strip([table[i] for i in frame[y].tolist()])
+
+    def _refresh(self):
         params = self.app.params  # pyright: ignore[reportAttributeAccessIssue]
+        config = self.app.config  # pyright: ignore[reportAttributeAccessIssue]
 
         if params.seed != self._last_seed:
             self._ox = OpenSimplex(seed=params.seed)
             self._last_seed = params.seed
 
-        frame = generate(self._ox, params, config, 70, 50, self.t)
+        render_key = (config.preset, config.show_value)
+        if render_key != self._last_render_key:
+            self._last_render_key = render_key
+            self._colour_table = gen_color_table(*render_key)
+
+        frame = generate(self._ox, params, 70, 50, self.t)
         if frame is None:
             return
-        self.update(frame)
+
+        self._frame = frame
+        self.refresh()
 
     class FpsMessage(Message):
         def __init__(self, fps: float):
