@@ -1,6 +1,7 @@
 import time
 
 from opensimplex import OpenSimplex
+from textual.message import Message
 from textual.widgets import Static
 
 from kyma.core.generate import generate
@@ -17,6 +18,9 @@ class NoiseView(Static):
         self._marked = True
 
         self.fps = 30
+
+        self._frames = 0
+        self._busy_time = 0.0
         self._timer = self.set_interval(1 / self.fps, self._tick)
 
         self.watch(self.app, "params", self._mark)
@@ -57,6 +61,16 @@ class NoiseView(Static):
 
         ## TODO: Remove config requirement. This is temp
         self._refresh(config)
+        self._frames += 1
+        self._busy_time += dt
+
+        if self._busy_time >= 0.5:
+            fps = self._frames / self._busy_time
+
+            self._frames = 0
+            self._busy_time = 0
+
+            self.post_message(self.FpsMessage(fps))
 
     def _refresh(self, config):
         params = self.app.params  # pyright: ignore[reportAttributeAccessIssue]
@@ -69,3 +83,8 @@ class NoiseView(Static):
         if frame is None:
             return
         self.update(frame)
+
+    class FpsMessage(Message):
+        def __init__(self, fps: float):
+            self.fps = fps
+            super().__init__()

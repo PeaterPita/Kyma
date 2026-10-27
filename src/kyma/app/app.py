@@ -40,6 +40,12 @@ class KymaApp(App):
 
             yield Legend()
 
+    ## Messages? ##
+
+    ## TODO: horrid name
+    def on_noise_view_fps_message(self, evt):
+        self.query_one(SummaryBar).fps = evt.fps
+
     ## Actions ##
 
     def action_toggle_play(self):
