@@ -6,7 +6,7 @@ from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
 
 from kyma.app.keybinds import KEYBINDS
-from kyma.app.widgets import Legend, NoiseView, SummaryBar
+from kyma.app.widgets import ControlBar, Legend, NoiseView, SummaryBar
 from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
 
 
@@ -30,13 +30,11 @@ class KymaApp(App):
         self.config = config
 
     def compose(self) -> ComposeResult:
-
         with Horizontal():
             with Vertical():
                 yield SummaryBar()
                 yield NoiseView()
-
-                # TODO: Controls widget. Play/Pause, Scrub, FPS, Speed
+                yield ControlBar()
 
             yield Legend()
 

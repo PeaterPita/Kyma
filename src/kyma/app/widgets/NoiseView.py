@@ -16,15 +16,15 @@ class NoiseView(Widget):
         self._ox = None
 
         # Time / Animation Stuff
-        self.t = 0.0
+        self._timer = None
         self._start = time.monotonic()
+
+        self.t = 0.0
         self._marked = True
 
-        self.fps = 30
-
+        self.fps = 0
         self._frames = 0
         self._busy_time = 0.0
-        self._timer = self.set_interval(1 / self.fps, self._tick)
 
         # Rendering
         self._frame = None
@@ -38,6 +38,7 @@ class NoiseView(Widget):
     def _conf_changed(self, config):
         config_fps = config.fps
 
+        ## TODO: Switch from timers to threaded tick worker
         if config_fps != self.fps:
             self.fps = config_fps
 
@@ -101,6 +102,7 @@ class NoiseView(Widget):
             self._last_render_key = render_key
             self._colour_table = gen_color_table(*render_key)
 
+        ## TODO: Hard coded size still needs changing
         frame = generate(self._ox, params, 70, 50, self.t)
         if frame is None:
             return

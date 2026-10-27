@@ -76,7 +76,7 @@ def gen_color_table(preset, show_value):
 
         # TODO: Look into half block rendering
         # Could use `▀` symbols to "double" vertical resolution
-        text = f"[{v:+.2f}]" if show_value else "██"
+        text = f" {v:+.2f} " if show_value else "██"
         segments.append(Segment(text, Style.parse(colour)))
 
     return segments
