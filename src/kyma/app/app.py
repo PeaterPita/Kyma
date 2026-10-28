@@ -57,4 +57,4 @@ class KymaApp(App):
         self.params = self.params.reset(field)
 
     def action_toggle_debug(self):
-        self.config = replace(self.config, show_value=not self.config.show_value)
+        self.config = self.config.toggle("show_value")

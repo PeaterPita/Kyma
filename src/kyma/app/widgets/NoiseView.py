@@ -34,6 +34,8 @@ class NoiseView(Widget):
         self._colour_table = []
         self._last_render_key = None
 
+        self._tick()
+
         # Watchers
         self.watch(self.app, "params", self._mark)
         self.watch(self.app, "config", self._conf_changed)

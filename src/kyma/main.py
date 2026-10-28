@@ -45,14 +45,6 @@ def parse_args():
         help="Show all preset colour options",
     )
 
-    parser.add_argument(
-        "--fps",
-        help="Set the Target FPS of the noise animation",
-        type=int,
-        metavar="",
-        default=30,
-    )
-
     return parser.parse_args()
 
 
@@ -64,15 +56,8 @@ def main() -> None:
             print(f"  - {preset}")
         sys.exit(0)
 
-    config_override = {}
-    if args.preset:
-        config_override["preset"] = args.preset
-
-    if args.fps:
-        config_override["fps"] = args.fps
-
     params = NoiseParams.create_from_args(args)
-    config = ConfigOptions(**config_override)
+    config = ConfigOptions.create_from_args(args)
 
     warm_numba()
 

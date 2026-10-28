@@ -14,21 +14,25 @@ def generate_random_seed() -> int:
 
 
 ## TODO: Better name
-## TODO: Make Generic
-## From APP.py: Make this also work with config options
 class _Shared_Custom:
+    ## TODO: Remove. Not entirely happy with this.
+    ## Its essentially the SpecMap just in different form
+    @classmethod
+    def _spec(cls, field):
+        return next(f for f in fields(cls) if f.name == field)  # pyright: ignore[reportArgumentType]
+
     @classmethod
     def create_from_args(cls, args):
         override = {}
-        for field in fields(cls):  # pyright: ignore[reportArgumentType]
-            arg = getattr(args, field.name, None)
+        for f in fields(cls):  # pyright: ignore[reportArgumentType]
+            arg = getattr(args, f.name, None)
             if arg is not None:
-                override[field.name] = arg
+                override[f.name] = arg
 
         return cls(**override)
 
     def change(self, field, delta, inverse=False):
-        meta = NoiseParamsSpec[field].metadata
+        meta = self._spec(field).metadata
 
         if delta is None:
             delta = meta["step"]
@@ -44,7 +48,7 @@ class _Shared_Custom:
     def reset(self, field):
 
         if field:
-            default = NoiseParamsSpec[field].default
+            default = self._spec(field).default
             return replace(self, **{field: default})  # pyright: ignore[reportArgumentType]
 
         else:
@@ -63,15 +67,9 @@ class NoiseParams(_Shared_Custom):
     lacunarity: float = _param_helper(2.0, 0.01, 1)
 
 
-NoiseParamsSpec = {f.name: f for f in fields(NoiseParams)}
-
-
-# TODO: a ConfigSpec map might be needed so the same param helper could be used.
-# This would simplify changing fps and speed, values.
 @dataclass
-class ConfigOptions:
-    # TODO: Still need control to change gradient / preset
+class ConfigOptions(_Shared_Custom):
     preset: str = "VIBRANT RAINBOW"
     show_value: bool = False
-    fps: int = 30
+    fps: int = _param_helper(30, 1, 0, 240)
     speed: float = 0.1
