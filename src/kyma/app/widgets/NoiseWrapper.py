@@ -6,7 +6,7 @@ from textual.widget import Widget
 from kyma.app.widgets import ControlBar, NoiseView
 
 
-class NoiseWrapper(Widget):
+class NoiseWrapper(Vertical):
     playing = reactive(False)
 
     def compose(self) -> ComposeResult:
@@ -16,3 +16,7 @@ class NoiseWrapper(Widget):
 
     def toggle_play(self):
         self.playing = not self.playing
+
+    ## TODO: FPS Overlay
+    # def on_noise_view_fps_message(self, evt):
+    #     self.query_one(SummaryBar).fps = evt.fps

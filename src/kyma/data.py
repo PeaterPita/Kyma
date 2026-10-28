@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, field, fields, replace
 from random import randint
 
 
@@ -13,8 +13,39 @@ def generate_random_seed() -> int:
     return randint(0, 1000000)
 
 
+## TODO: Better name
+## TODO: Make Generic
+## From APP.py: Make this also work with config options
+class _Shared_Custom:
+    def change(self, field, delta, inverse=False):
+        meta = NoiseParamsSpec[field].metadata
+
+        if delta is None:
+            delta = meta["step"]
+
+        if inverse:
+            delta *= -1
+
+        cur = getattr(self, field)
+        new = round(min(meta["upper"], max(meta["lower"], cur + delta)), 3)
+
+        return replace(self, **{field: new})  # pyright: ignore[reportArgumentType]
+
+    def reset(self, field):
+
+        if field:
+            default = NoiseParamsSpec[field].default
+            return replace(self, **{field: default})  # pyright: ignore[reportArgumentType]
+
+        else:
+            return type(self)()
+
+    def toggle(self, field):
+        return replace(self, **{field: not getattr(self, field)})  # pyright: ignore[reportArgumentType]
+
+
 @dataclass
-class NoiseParams:
+class NoiseParams(_Shared_Custom):
     seed: int = generate_random_seed()
     scale: float = _param_helper(0.1, 0.01)
     octaves: int = _param_helper(1, 1, 1, 10)

@@ -4,10 +4,11 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
+from textual.widgets import KeyPanel
 
 from kyma.app.keybinds import KEYBINDS
-from kyma.app.widgets import Legend, NoiseWrapper, SummaryBar
-from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
+from kyma.app.widgets import NoiseWrapper, SummaryBar
+from kyma.data import ConfigOptions, NoiseParams
 
 
 class KymaApp(App):
@@ -34,13 +35,8 @@ class KymaApp(App):
             with Vertical():
                 yield SummaryBar()
                 yield NoiseWrapper()
-            yield Legend()
-
-    ## Messages? ##
-
-    ## TODO: horrid name
-    def on_noise_view_fps_message(self, evt):
-        self.query_one(SummaryBar).fps = evt.fps
+            # yield Legend()
+            yield KeyPanel()
 
     ## Actions ##
 
@@ -54,35 +50,11 @@ class KymaApp(App):
     def action_change_speed(self, delta):
         self.config = replace(self.config, speed=self.config.speed + delta)
 
-    ## TODO: Hacky
-    ## TODO: App is still technically owning the data.
-    ## Move bounds checking / updating into core app and pass through data?
-    ## TOOD: Make this also work with config options
-    def action_change(
-        self,
-        field,
-        inverse=False,
-        delta=None,
-    ):
-        meta = NoiseParamsSpec[field].metadata
-
-        if delta is None:
-            delta = meta["step"]
-
-        if inverse:
-            delta *= -1
-
-        cur = getattr(self.params, field)
-        new = round(min(meta["upper"], max(meta["lower"], cur + delta)), 3)
-
-        self.params = replace(self.params, **{field: new})
+    def action_change(self, field, inverse=False, delta=None):
+        self.params = self.params.change(field, delta, inverse)
 
     def action_reset(self, field=None):
-        if field:
-            default = NoiseParamsSpec[field].default
-            self.params = replace(self.params, **{field: default})
-        else:
-            self.params = NoiseParams()
+        self.params = self.params.reset(field)
 
     def action_toggle_debug(self):
         self.config = replace(self.config, show_value=not self.config.show_value)
