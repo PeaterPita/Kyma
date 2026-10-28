@@ -2,6 +2,7 @@ import time
 
 from opensimplex import OpenSimplex
 from textual.message import Message
+from textual.reactive import reactive
 from textual.strip import Strip
 from textual.widget import Widget
 
@@ -11,6 +12,8 @@ from kyma.core.generate import gen_color_table, generate
 ## TODO: Centering
 ## Changing from Static to a Widget has caused NoiseView to no longer be centered
 class NoiseView(Widget):
+    playing = reactive(False)
+
     def on_mount(self):
         self._last_seed = None
         self._ox = None
@@ -59,7 +62,7 @@ class NoiseView(Widget):
         dt = now - self._start
         self._start = now
 
-        if config.playing:
+        if self.playing:
             self.t += dt * config.speed
             self._marked = True
 

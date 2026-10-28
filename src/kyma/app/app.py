@@ -6,7 +6,7 @@ from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
 
 from kyma.app.keybinds import KEYBINDS
-from kyma.app.widgets import ControlBar, Legend, NoiseView, SummaryBar
+from kyma.app.widgets import Legend, NoiseWrapper, SummaryBar
 from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
 
 
@@ -33,9 +33,7 @@ class KymaApp(App):
         with Horizontal():
             with Vertical():
                 yield SummaryBar()
-                yield NoiseView()
-                yield ControlBar()
-
+                yield NoiseWrapper()
             yield Legend()
 
     ## Messages? ##
@@ -47,7 +45,7 @@ class KymaApp(App):
     ## Actions ##
 
     def action_toggle_play(self):
-        self.config = replace(self.config, playing=not self.config.playing)
+        self.query_one(NoiseWrapper).toggle_play()
 
     def action_change_fps(self, delta):
         new = self.config.fps + delta
