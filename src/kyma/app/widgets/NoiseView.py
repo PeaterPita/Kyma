@@ -6,6 +6,7 @@ from textual.reactive import reactive
 from textual.strip import Strip
 from textual.widget import Widget
 
+from kyma.core.colour import new_colourise_value
 from kyma.core.generate import gen_color_table, generate
 
 
@@ -16,8 +17,6 @@ class NoiseView(Widget):
 
     ### TODO:
         - Switch from timers to threaded tick worker
-        - Change from `Static` to a `Widget` caused `NoiseView` to no longer be centered
-        - Hard coded size still needs changing
     """
 
     playing = reactive(False)
@@ -42,7 +41,7 @@ class NoiseView(Widget):
         self._colour_table = []
         self._last_render_key = None
 
-        self._tick()
+        self._refresh()
 
         # Watchers
         self.watch(self.app, "params", self._mark)
@@ -114,7 +113,7 @@ class NoiseView(Widget):
             self._last_render_key = render_key
             self._colour_table = gen_color_table(*render_key)
 
-        frame = generate(self._ox, params, 70, 50, self.t)
+        frame = generate(self._ox, params, self.size.width, self.size.height, self.t)
         if frame is None:
             return
 

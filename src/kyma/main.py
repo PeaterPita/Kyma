@@ -12,7 +12,6 @@ from kyma.core.presets import preset_colours
 from kyma.data import ConfigOptions, NoiseParams
 
 
-# TODO: Classic mode? Without textual
 # TODO: pass in color file
 def parse_args():
     parser = argparse.ArgumentParser()

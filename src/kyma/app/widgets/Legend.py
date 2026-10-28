@@ -1,10 +1,11 @@
 from textual.app import ComposeResult
+from textual.containers import Horizontal, Vertical
 from textual.widgets import Label, Rule, Static
 
 from kyma.app.keybinds import KEYBINDS
 
 
-class Legend(Static):
+class Legend(Horizontal):
     """Custom Legend Widget. (In-Progress).
 
     Uses the custom defined `KEYBINDS` list to construct a legend / key map.
@@ -14,18 +15,26 @@ class Legend(Static):
     Or even a toggle between grouped / flat rendering
     """
 
+    DEFAULT_CSS = """
+        Legend {
+            height: 100%;
+        }
+    """
+
     def compose(self) -> ComposeResult:
-        groups = dict()
-        for bind in KEYBINDS:
-            groups.setdefault(bind.group, []).append(bind)
+        yield Rule(orientation="vertical")
+        with Vertical():
+            groups = dict()
+            for bind in KEYBINDS:
+                groups.setdefault(bind.group, []).append(bind)
 
-        ## TODO: Better formatting
-        for name, binds in groups.items():
-            yield Label(name)
-            yield Rule()
-            for bind in binds:
-                key = bind.key
-                if bind.display is not None:
-                    key = bind.display
+            ## TODO: Better formatting
+            for name, binds in groups.items():
+                yield Label(name)
+                yield Rule()
+                for bind in binds:
+                    key = bind.key
+                    if bind.display is not None:
+                        key = bind.display
 
-                yield Label(f"{key} {bind.desc}")
+                    yield Label(f"{key} {bind.desc}")

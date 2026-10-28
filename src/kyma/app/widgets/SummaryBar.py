@@ -1,9 +1,10 @@
 from rich.align import Align
-from rich.panel import Panel
-from textual.widgets import Static
+from textual.app import ComposeResult
+from textual.containers import Container, Horizontal
+from textual.widgets import Label, Static
 
 
-class SummaryBar(Static):
+class SummaryBar(Horizontal):
     """Summary Bar displaying information about the current generating paramaters.
 
     Displaying: `[seed, scale, octaves, persistence, lacunarity, show_value]`
@@ -13,9 +14,26 @@ class SummaryBar(Static):
         - Add size {width} x {height} module
     """
 
+    DEFAULT_CSS = """
+        SummaryBar {
+            height: auto;
+            align: center middle;
+            padding: 1 2;
+        }
+
+        #title {
+            color: $accent;
+        }
+
+    """
+
     def on_mount(self):
         self.watch(self.app, "params", self._refresh)
         self.watch(self.app, "config", self._refresh)
+
+    def compose(self) -> ComposeResult:
+        yield Label("Kyma", id="title")
+        yield Static(id="values")
 
     def _refresh(self, _):
 
@@ -31,5 +49,5 @@ class SummaryBar(Static):
 
         val = f"VALUES: {'Shown' if config.show_value else 'Hidden'}"
 
-        joined_text = " | ".join([sca, otv, per, lac, val, seed])
-        self.update(Panel(Align.center(joined_text), style="bold"))
+        joined_text = " | ".join([seed, sca, otv, per, lac, val])
+        self.query_one("#values", Static).update(Align.center(joined_text))

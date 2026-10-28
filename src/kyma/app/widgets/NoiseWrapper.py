@@ -1,5 +1,5 @@
 from textual.app import ComposeResult
-from textual.containers import Vertical
+from textual.containers import Container, Vertical
 from textual.reactive import reactive
 from textual.widgets import Label
 
@@ -22,9 +22,14 @@ class NoiseWrapper(Vertical):
             position: absolute;
             offset: 1 1;
             color: yellow;
-            background: transparent;
             layer: top;
         }
+
+        #controls {
+            height: auto;
+        }
+
+
     """
 
     playing = reactive(False)
@@ -37,9 +42,12 @@ class NoiseWrapper(Vertical):
         fps.display = config.show_fps
 
     def compose(self) -> ComposeResult:
-        yield NoiseView().data_bind(playing=NoiseWrapper.playing)
-        yield ControlBar()
-        yield Label("FPS: 0", id="fps")
+        with Container(id="view"):
+            yield NoiseView().data_bind(playing=NoiseWrapper.playing)
+            yield Label("FPS: 0", id="fps")
+
+        with Vertical(id="controls"):
+            yield ControlBar()
 
     def toggle_play(self) -> None:
         self.playing = not self.playing
