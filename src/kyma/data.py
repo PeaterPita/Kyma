@@ -73,4 +73,4 @@ class ConfigOptions(_Shared_Custom):
     show_value: bool = False
     show_fps: bool = False
     fps: int = _param_helper(30, 1, 0, 240)
-    speed: float = 0.1
+    speed: float = _param_helper(0.1, 0.1, 0, 1)

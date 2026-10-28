@@ -1,171 +1,107 @@
-## TODO: Replace with dataclass with defaults
-## TODO: Helper for general Inc, Dec, Reset binds
-## TODO: Size control keybinds. (Arrows)
+from dataclasses import dataclass
 
-## TODO: Seriously gotta tweak keybinds soon
+from textual.binding import Binding
+
+
+@dataclass
+class Keybind:
+    group: str
+    key: str
+    action: str
+    desc: str
+    display: str | None = None
+
+    def to_textual(self):
+        return Binding(self.key, self.action, self.desc)
+
+
+def param_binds_helper(
+    field: str,
+    inc_key: str,
+    dec_key: str,
+    reset_key=None,
+    label=None,
+):
+    label = label or field
+
+    binds = [
+        Keybind(
+            "Controls",
+            inc_key,
+            f"change({field!r})",
+            f"Increase {label} Factor",
+        ),
+        Keybind(
+            "Controls",
+            dec_key,
+            f"change({field!r}, 'True')",
+            f"Decrease {label} Factor",
+        ),
+    ]
+
+    if reset_key:
+        binds.append(
+            Keybind(
+                "Controls",
+                reset_key,
+                f"reset({field!r})",
+                f"Reset {label} Factor",
+            ),
+        )
+
+    return binds
+
+
+## TODO: Keys left to implement
+## TODO: Size control keybinds. (Arrows)
+# {
+#     "group": "Controls",
+#     "key": "t",
+#     "display": "",
+#     "action": "change_fps(1)",
+#     "desc": "Increase Animation FPS",
+# },
+# {
+#     "group": "Controls",
+#     "key": "g",
+#     "display": "",
+#     "action": "change_fps(-1)",
+#     "desc": "Reduce Animation FPS",
+# },
+# {
+#     # TODO: Implement Legend Toggle
+#     "group": "General",
+#     "key": "ctrl+L",
+#     "display": "",
+#     "action": "",
+#     "desc": "Toggle Legend Display",
+# },
+# {
+#     # TODO: Implement Fullscreen
+#     "group": "General",
+#     "key": "ctrl+F",
+#     "display": "",
+#     "action": "",
+#     "desc": "Toggle Fullscreen",
+# },
+
 
 KEYBINDS = [
-    #######################################
-    {
-        "group": "Controls",
-        "key": "q",
-        "display": "",
-        "action": "change('scale')",
-        "desc": "Increase Scale Factor",
-    },
-    {
-        "group": "Controls",
-        "key": "a",
-        "display": "",
-        "action": "change('scale', True)",
-        "desc": "Decrease Scale Factor",
-    },
-    {
-        "group": "Controls",
-        "key": "z",
-        "display": "",
-        "action": "reset('scale')",
-        "desc": "Reset scale value to default",
-    },
-    ######################################
-    {
-        "group": "Controls",
-        "key": "w",
-        "display": "",
-        "action": "change('octaves')",
-        "desc": "Increase Octave Count",
-    },
-    {
-        "group": "Controls",
-        "key": "s",
-        "display": "",
-        "action": "change('octaves', True)",
-        "desc": "Decrease Octave Count",
-    },
-    {
-        "group": "Controls",
-        "key": "x",
-        "display": "",
-        "action": "reset('octaves')",
-        "desc": "Reset Octaves value to default",
-    },
-    #######################################
-    {
-        "group": "Controls",
-        "key": "e",
-        "display": "",
-        "action": "change('persistence')",
-        "desc": "\\[PH]",
-    },
-    {
-        "group": "Controls",
-        "key": "d",
-        "display": "",
-        "action": "change('persistence', True)",
-        "desc": "\\[PH]",
-    },
-    {
-        "group": "Controls",
-        "key": "c",
-        "display": "",
-        "action": "reset('persistence')",
-        "desc": "Reset Persistence value to default",
-    },
-    #######################################
-    {
-        "group": "Controls",
-        "key": "r",
-        "display": "",
-        "action": "change('lacunarity')",
-        "desc": "\\[PH]",
-    },
-    {
-        "group": "Controls",
-        "key": "f",
-        "display": "",
-        "action": "change('lacunarity', True)",
-        "desc": "\\[PH]",
-    },
-    {
-        "group": "Controls",
-        "key": "v",
-        "display": "",
-        "action": "reset('lacunarity')",
-        "desc": "Reset Lacunarity value to default",
-    },
-    #######################################
-    {
-        "group": "Controls",
-        "key": "t",
-        "display": "",
-        "action": "change_fps(1)",
-        "desc": "Increase Animation FPS",
-    },
-    {
-        "group": "Controls",
-        "key": "g",
-        "display": "",
-        "action": "change_fps(-1)",
-        "desc": "Reduce Animation FPS",
-    },
-    #######################################
-    {
-        "group": "Controls",
-        "key": "y",
-        "display": "",
-        "action": "change_speed(0.1)",
-        "desc": "Increase Animation Speed",
-    },
-    {
-        "group": "Controls",
-        "key": "h",
-        "display": "",
-        "action": "change_speed(-0.1)",
-        "desc": "Reduce Animation Speed",
-    },
-    #######################################
-    {
-        "group": "General",
-        "key": "escape",
-        "display": "",
-        "action": "reset()",
-        "desc": "Reset All",
-    },
-    {
-        # TODO: Implement Legend Toggle
-        "group": "General",
-        "key": "ctrl+L",
-        "display": "",
-        "action": "",
-        "desc": "Toggle Legend Display",
-    },
-    {
-        # TODO: Implement Fullscreen
-        "group": "General",
-        "key": "ctrl+F",
-        "display": "",
-        "action": "",
-        "desc": "Toggle Fullscreen",
-    },
-    {
-        "group": "General",
-        "key": "space",
-        "display": "Space",
-        "action": "toggle_play()",
-        "desc": "Toggle Animation Playing",
-    },
-    {
-        "group": "Debug",
-        "key": "0",
-        "display": "",
-        "action": "toggle_debug()",
-        "desc": "Show Values",
-    },
-    {
-        "group": "Debug",
-        "key": "1",
-        "display": "",
-        "action": "toggle_fps()",
-        "desc": "Render calculated FPS",
-    },
+    ###############
+    # Inc/DEC/Rst
+    *param_binds_helper("scale", "q", "a", "z"),
+    *param_binds_helper("octaves", "w", "s", "x"),
+    *param_binds_helper("persistence", "e", "d", "c"),
+    *param_binds_helper("lacunarity", "r", "f", "v"),
+    #########
+    # TODO: Remove
+    # Speed
+    Keybind("Controls", "y", "change_speed(0.1)", "Increase Speed of Animation"),
+    Keybind("Controls", "h", "change_speed(-0.1)", "Decrease Speed of Animation"),
+    ###########
+    # General
+    Keybind("General", "escape", "reset()", "Reset All"),
+    Keybind("General", "space", "toggle_play()", "Toggle Animation Playing"),
+    Keybind("Debug", "0", "toggle_debug()", "Show Values"),
+    Keybind("Debug", "1", "toggle_fps()", "Render Calculated FPS"),
 ]

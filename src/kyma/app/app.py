@@ -1,7 +1,6 @@
 from dataclasses import replace
 
 from textual.app import App, ComposeResult
-from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
 from textual.widgets import KeyPanel
@@ -16,13 +15,10 @@ class KymaApp(App):
     # TODO: App wide:
     # Notifications self.app.notify
 
-    # TODO: Try to remove if possible
     params = reactive(NoiseParams)
     config = reactive(ConfigOptions)
 
-    BINDINGS = [  # noqa: RUF012
-        Binding(bind["key"], bind["action"], bind["desc"]) for bind in KEYBINDS
-    ]
+    BINDINGS = [bind.to_textual() for bind in KEYBINDS]  # noqa: RUF012
 
     def __init__(self, params, config):
         super().__init__()
@@ -48,7 +44,7 @@ class KymaApp(App):
         self.config = replace(self.config, fps=max(1, new))
 
     def action_change_speed(self, delta):
-        self.config = replace(self.config, speed=self.config.speed + delta)
+        self.config = self.config.change("speed", delta)
 
     def action_change(self, field, inverse=False, delta=None):
         self.params = self.params.change(field, delta, inverse)
