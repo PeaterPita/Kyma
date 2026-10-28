@@ -1,13 +1,15 @@
 """Main module for generating and displaying 2D simplex noise in the terminal."""
 
 import argparse
+import sys
+from dataclasses import fields
 
 import numpy as np
 from opensimplex import OpenSimplex
 
 from kyma.app.app import KymaApp
 from kyma.core.presets import preset_colours
-from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
+from kyma.data import ConfigOptions, NoiseParams
 
 
 # TODO: Classic mode? Without textual
@@ -15,28 +17,39 @@ from kyma.data import ConfigOptions, NoiseParams, NoiseParamsSpec
 def parse_args():
     parser = argparse.ArgumentParser()
 
-    for spec, field in NoiseParamsSpec.items():
-        parser.add_argument(
-            f"--{spec}",
-            help=f"Startup {spec} Value"
-            + (" (default: %(default)s)" if spec != "seed" else ""),
-            type=(type(field.default)),
-            metavar="",
-            default=(field.default),
-        )
+    for cls in (NoiseParams, ConfigOptions):
+        for field in fields(cls):
+            if "step" not in field.metadata:
+                continue
+
+            parser.add_argument(
+                f"--{field.name}",
+                help=f"Startup {field.name} Value"
+                + (" (default: %(default)s)" if field.name != "seed" else ""),
+                type=(type(field.default)),
+                metavar="",
+                default=(field.default),
+            )
 
     parser.add_argument(
         "--preset",
         help="Set the color gradient to one of the presets.",
         type=str.upper,
+        metavar="",
         choices=preset_colours,
-        default="VIBRANT RAINBOW",
+    )
+
+    parser.add_argument(
+        "--list-presets",
+        action="store_true",
+        help="Show all preset colour options",
     )
 
     parser.add_argument(
         "--fps",
         help="Set the Target FPS of the noise animation",
         type=int,
+        metavar="",
         default=30,
     )
 
@@ -46,11 +59,10 @@ def parse_args():
 def main() -> None:
     args = parse_args()
 
-    arg_override = {}
-    for spec in NoiseParamsSpec:
-        args_val = getattr(args, spec)
-        if args_val is not None:
-            arg_override[spec] = args_val
+    if args.list_presets:
+        for preset in preset_colours:
+            print(f"  - {preset}")
+        sys.exit(0)
 
     config_override = {}
     if args.preset:
@@ -59,7 +71,7 @@ def main() -> None:
     if args.fps:
         config_override["fps"] = args.fps
 
-    params = NoiseParams(**arg_override)
+    params = NoiseParams.create_from_args(args)
     config = ConfigOptions(**config_override)
 
     warm_numba()

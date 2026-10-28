@@ -17,6 +17,16 @@ def generate_random_seed() -> int:
 ## TODO: Make Generic
 ## From APP.py: Make this also work with config options
 class _Shared_Custom:
+    @classmethod
+    def create_from_args(cls, args):
+        override = {}
+        for field in fields(cls):  # pyright: ignore[reportArgumentType]
+            arg = getattr(args, field.name, None)
+            if arg is not None:
+                override[field.name] = arg
+
+        return cls(**override)
+
     def change(self, field, delta, inverse=False):
         meta = NoiseParamsSpec[field].metadata
 
