@@ -161,4 +161,11 @@ KEYBINDS = [
         "action": "toggle_debug()",
         "desc": "Show Values",
     },
+    {
+        "group": "Debug",
+        "key": "1",
+        "display": "",
+        "action": "toggle_fps()",
+        "desc": "Render calculated FPS",
+    },
 ]

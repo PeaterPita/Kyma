@@ -1,18 +1,12 @@
 from rich.align import Align
 from rich.panel import Panel
-from textual.reactive import reactive
 from textual.widgets import Static
 
 
 class SummaryBar(Static):
-    fps = reactive(0.0)
-
     def on_mount(self):
         self.watch(self.app, "params", self._refresh)
         self.watch(self.app, "config", self._refresh)
-
-    def watch_fps(self, _):
-        self._refresh(_)
 
     def _refresh(self, _):
 

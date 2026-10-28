@@ -58,3 +58,6 @@ class KymaApp(App):
 
     def action_toggle_debug(self):
         self.config = self.config.toggle("show_value")
+
+    def action_toggle_fps(self):
+        self.config = self.config.toggle("show_fps")

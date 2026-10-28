@@ -71,5 +71,6 @@ class NoiseParams(_Shared_Custom):
 class ConfigOptions(_Shared_Custom):
     preset: str = "VIBRANT RAINBOW"
     show_value: bool = False
+    show_fps: bool = False
     fps: int = _param_helper(30, 1, 0, 240)
     speed: float = 0.1
