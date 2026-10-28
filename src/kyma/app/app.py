@@ -1,38 +1,43 @@
+# noqa: D100
 from dataclasses import replace
 
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.reactive import reactive
-from textual.widgets import KeyPanel
 
 from kyma.app.keybinds import KEYBINDS
-from kyma.app.widgets import NoiseWrapper, SummaryBar
+from kyma.app.widgets import Legend, NoiseWrapper, SummaryBar
 from kyma.data import ConfigOptions, NoiseParams
 
 
 class KymaApp(App):
+    """Kyma: Textual-UI.
+
+    ## TODO:
+        - App wide Notifications (self.app.notify)
+
+
+    """
+
     CSS_PATH = "global.tcss"
-    # TODO: App wide:
-    # Notifications self.app.notify
 
     params = reactive(NoiseParams)
     config = reactive(ConfigOptions)
 
     BINDINGS = [bind.to_textual() for bind in KEYBINDS]  # noqa: RUF012
 
-    def __init__(self, params, config):
+    def __init__(self, params, config):  # noqa: D107
         super().__init__()
 
         self.params = params
         self.config = config
 
-    def compose(self) -> ComposeResult:
+    def compose(self) -> ComposeResult:  # noqa: D102
         with Horizontal():
             with Vertical():
                 yield SummaryBar()
                 yield NoiseWrapper()
-            # yield Legend()
-            yield KeyPanel()
+            yield Legend()
 
     ## Actions ##
 

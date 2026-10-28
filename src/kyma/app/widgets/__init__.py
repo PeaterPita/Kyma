@@ -1,3 +1,5 @@
+"""Widget Package containing all of Kyma's Widgets."""
+
 from kyma.app.widgets.ControlBar import ControlBar
 from kyma.app.widgets.Legend import Legend
 from kyma.app.widgets.NoiseView import NoiseView

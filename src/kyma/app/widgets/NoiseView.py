@@ -9,9 +9,17 @@ from textual.widget import Widget
 from kyma.core.generate import gen_color_table, generate
 
 
-## TODO: Centering
-## Changing from Static to a Widget has caused NoiseView to no longer be centered
 class NoiseView(Widget):
+    """Noise View Widget. Renders the generated noise pattern.
+
+    Additionally, manages its own ticking timer and parameter / config watchers.
+
+    ### TODO:
+        - Switch from timers to threaded tick worker
+        - Change from `Static` to a `Widget` caused `NoiseView` to no longer be centered
+        - Hard coded size still needs changing
+    """
+
     playing = reactive(False)
 
     def on_mount(self):
@@ -43,7 +51,6 @@ class NoiseView(Widget):
     def _conf_changed(self, config):
         config_fps = config.fps
 
-        ## TODO: Switch from timers to threaded tick worker
         if config_fps != self.fps:
             self.fps = config_fps
 
@@ -107,7 +114,6 @@ class NoiseView(Widget):
             self._last_render_key = render_key
             self._colour_table = gen_color_table(*render_key)
 
-        ## TODO: Hard coded size still needs changing
         frame = generate(self._ox, params, 70, 50, self.t)
         if frame is None:
             return
@@ -116,6 +122,17 @@ class NoiseView(Widget):
         self.refresh()
 
     class FpsMessage(Message):
+        """Custom Message for alerting of new FPS value.
+
+        ## Arguments:
+            - fps: The updated measured frame rate as a float
+
+
+        ## Consumers:
+            - NoiseWrapper
+
+        """
+
         def __init__(self, fps: float):
             self.fps = fps
             super().__init__()

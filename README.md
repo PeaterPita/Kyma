@@ -41,19 +41,19 @@ uv run kyma
 ## Usage 
 
 ```bash 
-usage: kyma [-h] [--seed ] [--scale ] [--octaves ] [--persistence ] [--lacunarity ] [--preset {VIBRANT RAINBOW,TRAFFIC LIGHTS,GLOOMY GREYSCALE,ICE-COLD BLUES,RED-HOT FIRE}]
-            [--fps FPS]
+usage: kyma [-h] [--scale ] [--octaves ] [--persistence ] [--lacunarity ] [--fps ] [--speed ] [--preset ] [--list-presets]
 
 options:
-  -h, --help            show this help message and exit
-  --seed                Startup seed Value
-  --scale               Startup scale Value (default: 0.1)
-  --octaves             Startup octaves Value (default: 1)
-  --persistence         Startup persistence Value (default: 0.5)
-  --lacunarity          Startup lacunarity Value (default: 2.0)
-  --preset {VIBRANT RAINBOW,TRAFFIC LIGHTS,GLOOMY GREYSCALE,ICE-COLD BLUES,RED-HOT FIRE}
-                        Set the color gradient to one of the presets.
-  --fps FPS             Set the Target FPS of the noise animation
+  -h, --help      show this help message and exit
+  --scale         Startup scale Value (default: 0.1)
+  --octaves       Startup octaves Value (default: 1)
+  --persistence   Startup persistence Value (default: 0.5)
+  --lacunarity    Startup lacunarity Value (default: 2.0)
+  --fps           Startup fps Value (default: 30)
+  --speed         Startup speed Value (default: 0.1)
+  --preset        Set the color gradient to one of the presets.
+
+  --list-presets  Show all preset colour options
 ```
 
 

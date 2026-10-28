@@ -4,6 +4,15 @@ from textual.widgets import Static
 
 
 class SummaryBar(Static):
+    """Summary Bar displaying information about the current generating paramaters.
+
+    Displaying: `[seed, scale, octaves, persistence, lacunarity, show_value]`
+
+    ### TODO:
+        - Reformat
+        - Add size {width} x {height} module
+    """
+
     def on_mount(self):
         self.watch(self.app, "params", self._refresh)
         self.watch(self.app, "config", self._refresh)
