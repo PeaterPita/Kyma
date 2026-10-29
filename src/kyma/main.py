@@ -2,7 +2,7 @@
 
 import argparse
 import sys
-from dataclasses import fields
+from dataclasses import MISSING, fields
 
 import numpy as np
 from opensimplex import OpenSimplex
@@ -21,13 +21,22 @@ def parse_args():
             if "step" not in field.metadata:
                 continue
 
+            ## TODO: Temp fix for default factory type
+            if field.default is not MISSING:
+                default = field.default
+            elif field.default_factory is not MISSING:
+                default = field.default_factory()
+            else:
+                print("ERROR")
+                default = None
+
             parser.add_argument(
                 f"--{field.name}",
                 help=f"Startup {field.name} Value"
                 + (" (default: %(default)s)" if field.name != "seed" else ""),
                 type=(field.type),
                 metavar="",
-                default=(field.default),
+                default=default,
             )
 
     parser.add_argument(
