@@ -25,7 +25,7 @@ def parse_args():
                 f"--{field.name}",
                 help=f"Startup {field.name} Value"
                 + (" (default: %(default)s)" if field.name != "seed" else ""),
-                type=(type(field.default)),
+                type=(field.type),
                 metavar="",
                 default=(field.default),
             )

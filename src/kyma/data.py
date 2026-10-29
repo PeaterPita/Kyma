@@ -60,7 +60,10 @@ class _Shared_Custom:
 
 @dataclass
 class NoiseParams(_Shared_Custom):
-    seed: int = generate_random_seed()
+    seed: int = field(
+        default_factory=lambda: generate_random_seed(),
+        metadata={"step": 1, "lower": 0, "upper": 1_000_000},
+    )
     scale: float = _param_helper(0.1, 0.01)
     octaves: int = _param_helper(1, 1, 1, 10)
     persistence: float = _param_helper(0.5, 0.01, 0, 1)
